@@ -92,3 +92,11 @@ initialOwner (address): The initial owner of the contract.
 #License
 This project is licensed under the MIT License.
 
+AUTHOR:
+
+creator: Justine Felix V. Fundal
+
+email: 8213339@ntc.edu.ph
+
+contact: 09176510079
+

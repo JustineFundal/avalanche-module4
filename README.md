@@ -25,7 +25,7 @@ This project is licensed under the MIT License.
 
 #Prerequisites
 
-Solidity ^0.8.25
+Solidity ^0.8.20
 
 OpenZeppelin Contracts
 

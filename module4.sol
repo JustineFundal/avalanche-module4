@@ -14,6 +14,7 @@ contract DegenToken is ERC20, Ownable {
     }
 
     mapping(string => Service) public services;
+    mapping(string ServiceName => mapping(address Redeemer => uint ServiceReceived)) public RedeemHistory;
 
     constructor(address initialOwner) Ownable(initialOwner) ERC20("Degen", "DGN") {}
 
@@ -42,18 +43,19 @@ contract DegenToken is ERC20, Ownable {
         emit ServiceCreated(msg.sender, serviceName, serviceUnits, servicePrice);
     }
 
-    function redeemService(string memory serviceName, uint256 serviceUnits) external {
+    function redeemService(address Redeemer, string memory serviceName, uint256 serviceUnits) external {
         Service storage service = services[serviceName];
         require(service.serviceUnits >= serviceUnits, "Not enough service units available");
         require(service.servicePrice * serviceUnits <= balanceOf(msg.sender), "Insufficient balance");
 
         _burn(msg.sender, service.servicePrice * serviceUnits);
         service.serviceUnits -= serviceUnits;
+        RedeemHistory[serviceName][Redeemer] += serviceUnits;
 
         emit ServiceRedeemed(msg.sender, serviceName, serviceUnits);
     }
 
-    function checkServiceBalance(address account, string memory serviceName) external view returns (uint256) {
-        return balanceOf(account) / services[serviceName].servicePrice;
+    function checkServiceBalance(string memory serviceName) external view returns (uint256 AvailableUnits, uint ServicePrice) {
+        return (services[serviceName].serviceUnits, services[serviceName].servicePrice);
     }
 }
